@@ -1,28 +1,28 @@
 ##Homework 1
 1. Setup project that has been discussed in the class. Make sure you can run both tests (native and web) successfully.<br />
 
-   See "hw1" package<br />
+   See "hw1" package
 
 2. For existing native mobile autotest try to use another locator (xpath, classname, ?). 
    Define these locators using Appium Inspector. Are there any difference with id version?<br />
 
     ```
-    //Find button by id<br />
-    String app_package_name = "com.example.android.contactmanager:id/";<br />
-    By add_btn = By.id(app_package_name + "addContactButton");<br />
+    //Find button by id
+    String app_package_name = "com.example.android.contactmanager:id/";
+    By add_btn = By.id(app_package_name + "addContactButton");
 
-    //Find button by xpath<br />
-    By add_btn = By.xpath("//android.widget.Button");<br />
+    //Find button by xpath
+    By add_btn = By.xpath("//android.widget.Button");
 
-    //Find button by classname<br />
-    By add_btn = By.className("android.widget.Button");<br />
+    //Find button by classname
+    By add_btn = By.className("android.widget.Button");
     ```
    
 3. Modify existing tests to run on a real device. What should be changed?<br /> 
 
-   Capabilities (deviceName) should be changed:<br />
+   Capabilities (deviceName) should be changed:
     ```
-    capabilities.setCapability("deviceName","a70ae441");<br />
+    capabilities.setCapability("deviceName","a70ae441");
     ```
   
 4. Connect a real device to Appium (describe required actions) and run tests.<br /> 
