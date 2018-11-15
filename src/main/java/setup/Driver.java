@@ -1,6 +1,8 @@
 package setup;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -66,15 +68,27 @@ public class Driver extends TestProperties {
         } else {
             throw new Exception("Unclear type of mobile app");
         }
+
         // Init driver for local Appium server with capabilities have been set
-        if(driverSingle == null) driverSingle = new AppiumDriver(new URL(DRIVER), capabilities);
+        if (driverSingle == null) {
+            switch (TEST_PLATFORM) {
+                case "Android":
+                    driverSingle = new AndroidDriver(new URL(DRIVER), capabilities);
+                    break;
+                case "iOS":
+                    driverSingle = new IOSDriver(new URL(DRIVER), capabilities);
+                    break;
+                default:
+                    throw new Exception("Unknown mobile platform");
+            }
+        }
 
         // Set an object to handle timeouts
-        if(waitSingle == null) waitSingle = new WebDriverWait(driver(), 10);
+        if (waitSingle == null) waitSingle = new WebDriverWait(driver(), 10);
     }
 
     protected AppiumDriver driver() throws Exception {
-        if(driverSingle == null) prepareDriver();
+        if (driverSingle == null) prepareDriver();
         return driverSingle;
     }
 

@@ -1,9 +1,8 @@
 package scenarios.nativeTests;
 
+import io.appium.java_client.HasOnScreenKeyboard;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import setup.Driver;
 
@@ -29,9 +28,30 @@ public class SimpleNativeTests extends Driver {
 //        By add_btn = By.className("android.widget.Button");
 
         driver().findElement(add_btn).click();
+
+
+        //checks
+        //Check that fields (Contact Name, Contact Phone) are appeared
+        By contactNameFiled = By.id(app_package_name + "contactNameEditText");
+        By contactPhoneField = By.id(app_package_name + "contactPhoneEditText");
+        Assert.assertTrue(driver().findElement(contactNameFiled).isDisplayed());
+        Assert.assertTrue(driver().findElement(contactPhoneField).isDisplayed());
+
+        //Check that fields titles are right
+        By contactNameTitle = By.id("Contact Name");
+        By contactPhoneTitle = By.id("Contact Phone");
+        Assert.assertEquals(driver().findElement(contactNameTitle).getText(), "Contact Name");
+        Assert.assertEquals(driver().findElement(contactPhoneTitle).getText(), "Contact Phone");
+
+        //Keyboard presence check
+        if (driver() instanceof HasOnScreenKeyboard) {
+            Assert.assertTrue(((HasOnScreenKeyboard) driver()).isKeyboardShown());
+        } else {
+            throw new RuntimeException("Current driver " + driver().getClass().getSimpleName() + " doesn't have a HasOnScreenKeyboard implementation");
+        }
+
         System.out.println("Simplest Appium test done");
     }
-
 
 
 }

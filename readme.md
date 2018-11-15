@@ -61,7 +61,7 @@
 3. Add checks of other fields and their titles (Contact Name, Contact phone) in “native” test
    
    See SimpleNativeTests.java
-   * Check that fields are appeared
+   * Check that fields (Contact Name, Contact Phone) are appeared
    * Check that fields titles are right 
 
 4. Add keyboard presence check  in “native” test.
@@ -70,9 +70,8 @@
 
 5. Which checks would you place in the “web” test?
  
-   * Check url
-   * Check that http code is 200
-   * Check loaded page title 
+   * Check that current url is right
+   * Check that http status code is 200
 
 6. Implement checks for “web” test in code and try to use. 
     

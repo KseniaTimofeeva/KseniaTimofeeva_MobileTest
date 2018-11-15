@@ -1,6 +1,11 @@
 package scenarios.webTests;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import setup.Driver;
 
@@ -18,6 +23,21 @@ public class SimpleWebTests extends Driver {
     public void webTest() throws Exception {
         driver().get(SUT);
         driverWait().until(ExpectedConditions.urlToBe(SUT + "/"));
+
+        //checks
+        //Check that current url is right
+        Assert.assertEquals(driver().getCurrentUrl(), SUT + "/");
+
+        //Check that http status code is 200
+        checkHttpStatusCode(200);
+
         System.out.println("Site opening done");
+    }
+
+    private void checkHttpStatusCode(int expCode) throws IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet request = new HttpGet(SUT);
+        HttpResponse response = client.execute(request);
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), expCode);
     }
 }
