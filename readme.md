@@ -1,4 +1,5 @@
 ##Homework 1
+
 1. Setup project that has been discussed in the class. Make sure you can run both tests (native and web) successfully.<br />
 
    See "hw1" package
@@ -40,6 +41,7 @@
     * DriverSetup class is too specific class. The structure should be changed to add more abstraction and to avoid code duplication<br />
     
 ##Homework 2
+
 1. Rewrite (complete) Driver using “singleton” pattern. Are there any advantages?
 
    It allows to have one unique object of Driver instead of several instances after inheritance of several classes.
@@ -76,3 +78,65 @@
 6. Implement checks for “web” test in code and try to use. 
     
    See SimpleWebTests.java
+   
+##Homework 3
+
+1. Add support of appPackage and appActivity parameters for Android devices 
+   (reading from a .properties file and then setting in the DesiredCapabilities). 
+   Locally installed Appium DT has no need in these parameters, 
+   but for Appium server of Minsk Mobile Farm it’s mandatory.
+   a.	Or try to use autoLaunch capability with app as before. Does this approach work?
+   
+   "autoLaunch" capability with "app" doesn't work. 
+
+   With "appPackage" and "appActivity" works good.
+   
+   nativetest.properties:
+   ```
+   app_package=com.example.android.contactmanager
+   app_activity=com.example.android.contactmanager.ContactManager
+   ```
+   
+   Driver.java:
+   ```
+   capabilities.setCapability("appPackage", APP_PACKAGE);
+   capabilities.setCapability("appActivity", APP_ACTIVITY);
+   ```
+
+
+2. Change settings to run web test on a certain iOS device on Mobile Test Farm.
+   Run test with your changes. Did test pass?
+
+   File webtest.properties had been changed. EPAM Mobile Farm is used for property "driver".
+   Access token hab been received.
+   ```
+   platform=iOS
+   devicename=IPHONE 5s
+   driver=http://EPM-TSTF:5fac4a23-110f-46c0-ad77-790932abe631@epm-mstfmsq-ci.minsk.epam.com:8080/wd/hub
+   ```
+   Test passed except of that thing that I had to use "https" instead of "http" in current url checking.
+
+3. Change settings to run native test on a certain/random Android device on Mobile Test Farm. 
+   Run test with your changes. Did test pass?
+   
+   For cetain device we should use property:
+   ```
+   devicename=LGE Nexus 5
+   ```
+   For random device we should comment it.
+   
+4. What’s wrong with our code? How to fix/improve it? Implement your suggestions.
+
+   * It's better to separate test logic and page objects with processing methods.
+   * We should use loggs instead of System.out.println.
+     ```
+     LOG.info("Site opening done");
+     ```
+   * It's better to use ENUM with property types to avoid mistakes with file name 
+     during reading properties
+     ```
+     FileInputStream in = new FileInputStream(String.valueOf(PropertyFile.NATIVE_TEST_PROPERTIES));
+     ```
+
+
+  

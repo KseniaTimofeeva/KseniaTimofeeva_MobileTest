@@ -3,6 +3,7 @@ package setup;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,14 +23,20 @@ public class Driver extends TestProperties {
     protected String SUT; // site under testing
     protected String TEST_PLATFORM;
     protected String DRIVER;
+    protected String DEVICE_NAME;
+    protected String APP_PACKAGE;
+    protected String APP_ACTIVITY;
 
     // Constructor initializes properties on driver creation
     protected Driver() throws IOException {
         AUT = getProp("aut");
         String t_sut = getProp("sut");
-        SUT = t_sut == null ? null : "http://" + t_sut;
+        SUT = t_sut == null ? null : "https://" + t_sut;
         TEST_PLATFORM = getProp("platform");
         DRIVER = getProp("driver");
+        DEVICE_NAME = getProp("devicename");
+        APP_PACKAGE = getProp("app_package");
+        APP_ACTIVITY = getProp("app_activity");
     }
 
     /**
@@ -45,7 +52,6 @@ public class Driver extends TestProperties {
         // Setup test platform: Android or iOS. Browser also depends on a platform
         switch (TEST_PLATFORM) {
             case "Android":
-                capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5554"); // default Android emulator
                 browserName = "Chrome";
                 break;
             case "iOS":
@@ -55,13 +61,24 @@ public class Driver extends TestProperties {
                 throw new Exception("Unknown mobile platform");
         }
 
+        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, TEST_PLATFORM);
 
         // Setup type of application: mobile, web (or hybrid)
         if (AUT != null && SUT == null) {
             // Native
             File app = new File(AUT);
-            capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+            switch (TEST_PLATFORM) {
+                case "Android":
+                    capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, APP_PACKAGE);
+                    capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, APP_ACTIVITY);
+                    break;
+                case "iOS":
+                    capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+                    break;
+                default:
+                    throw new Exception("Unknown mobile platform");
+            }
         } else if (SUT != null && AUT == null) {
             // Web
             capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName);

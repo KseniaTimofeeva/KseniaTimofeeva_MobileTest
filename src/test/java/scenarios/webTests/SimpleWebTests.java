@@ -4,6 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,7 +15,7 @@ import java.io.IOException;
 
 @Test(groups = "web")
 public class SimpleWebTests extends Driver {
-
+    private static final Logger LOG = LogManager.getLogger(SimpleWebTests.class);
 
     private SimpleWebTests() throws IOException {
         super();
@@ -31,7 +33,7 @@ public class SimpleWebTests extends Driver {
         //Check that http status code is 200
         checkHttpStatusCode(200);
 
-        System.out.println("Site opening done");
+        LOG.info("Site opening done");
     }
 
     private void checkHttpStatusCode(int expCode) throws IOException {

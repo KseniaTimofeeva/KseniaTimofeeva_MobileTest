@@ -1,6 +1,8 @@
 package scenarios.nativeTests;
 
 import io.appium.java_client.HasOnScreenKeyboard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,6 +12,7 @@ import java.io.IOException;
 
 @Test(groups = "native")
 public class SimpleNativeTests extends Driver {
+    private static final Logger LOG = LogManager.getLogger(SimpleNativeTests.class);
 
     protected SimpleNativeTests() throws IOException {
     }
@@ -50,7 +53,7 @@ public class SimpleNativeTests extends Driver {
             throw new RuntimeException("Current driver " + driver().getClass().getSimpleName() + " doesn't have a HasOnScreenKeyboard implementation");
         }
 
-        System.out.println("Simplest Appium test done");
+        LOG.info("Simplest Appium test done");
     }
 
 
