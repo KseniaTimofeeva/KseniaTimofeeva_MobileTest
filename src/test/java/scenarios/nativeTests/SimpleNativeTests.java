@@ -1,11 +1,12 @@
 package scenarios.nativeTests;
 
-import io.appium.java_client.HasOnScreenKeyboard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.testng.Assert;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pageObjects.nativePO.AddContactPage;
+import pageObjects.nativePO.ContactPage;
 import setup.Driver;
 
 import java.io.IOException;
@@ -14,44 +15,38 @@ import java.io.IOException;
 public class SimpleNativeTests extends Driver {
     private static final Logger LOG = LogManager.getLogger(SimpleNativeTests.class);
 
+    private ContactPage contactPage;
+    private AddContactPage addContactPage;
+
     protected SimpleNativeTests() throws IOException {
+    }
+
+    @BeforeClass
+    public void beforeClass() throws Exception {
+        contactPage = PageFactory.initElements(driver(), ContactPage.class);
+        addContactPage = PageFactory.initElements(driver(), AddContactPage.class);
     }
 
     @Test(description = "This simple test just click on button 'Add contact'")
     public void SimplestTest() throws Exception {
 
-        //Find button by id
-        String app_package_name = "com.example.android.contactmanager:id/";
-        By add_btn = By.id(app_package_name + "addContactButton");
+        //Click button Add contact
+        contactPage.clickAddContactButton(driver());
 
-        //Find button by xpath
-//        By add_btn = By.xpath("//android.widget.Button");
+        //Check that field Contact Name is appeared
+        addContactPage.checkContactNameFieldAppeared();
 
-        //Find button by classname
-//        By add_btn = By.className("android.widget.Button");
+        //Check that field Contact Phone is appeared
+        addContactPage.checkContactPhoneFiledAppeared();
 
-        driver().findElement(add_btn).click();
+        //Check title of Contact Name field is right
+        addContactPage.checkContactNameTitle("Contact Name");
 
-
-        //checks
-        //Check that fields (Contact Name, Contact Phone) are appeared
-        By contactNameFiled = By.id(app_package_name + "contactNameEditText");
-        By contactPhoneField = By.id(app_package_name + "contactPhoneEditText");
-        Assert.assertTrue(driver().findElement(contactNameFiled).isDisplayed());
-        Assert.assertTrue(driver().findElement(contactPhoneField).isDisplayed());
-
-        //Check that fields titles are right
-        By contactNameTitle = By.id("Contact Name");
-        By contactPhoneTitle = By.id("Contact Phone");
-        Assert.assertEquals(driver().findElement(contactNameTitle).getText(), "Contact Name");
-        Assert.assertEquals(driver().findElement(contactPhoneTitle).getText(), "Contact Phone");
+        //Check title of Contact Phone field is right
+        addContactPage.checkContactPhoneTitle("Contact Phone");
 
         //Keyboard presence check
-        if (driver() instanceof HasOnScreenKeyboard) {
-            Assert.assertTrue(((HasOnScreenKeyboard) driver()).isKeyboardShown());
-        } else {
-            throw new RuntimeException("Current driver " + driver().getClass().getSimpleName() + " doesn't have a HasOnScreenKeyboard implementation");
-        }
+        addContactPage.checkKeyboardPresence(driver());
 
         LOG.info("Simplest Appium test done");
     }
