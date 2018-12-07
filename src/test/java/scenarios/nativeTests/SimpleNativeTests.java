@@ -7,12 +7,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pageObjects.nativePO.AddContactPage;
 import pageObjects.nativePO.ContactPage;
+import scenarios.Hooks;
 import setup.Driver;
 
 import java.io.IOException;
 
 @Test(groups = "native")
-public class SimpleNativeTests extends Driver {
+public class SimpleNativeTests extends Hooks {
     private static final Logger LOG = LogManager.getLogger(SimpleNativeTests.class);
 
     private ContactPage contactPage;

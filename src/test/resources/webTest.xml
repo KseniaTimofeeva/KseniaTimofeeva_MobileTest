@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Web Suite" verbose="1">
+
+    <parameter name="usePropFile" value="web"/>
+
+    <test name="Web tests">
+        <classes>
+            <class name="scenarios.webTests.SimpleWebTests"/>
+        </classes>
+
+    </test>
+</suite>

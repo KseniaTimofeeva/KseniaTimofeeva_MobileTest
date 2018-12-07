@@ -5,14 +5,18 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Parameters;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 public class Driver extends TestProperties {
+    private static final Logger LOG = LogManager.getLogger(Driver.class);
 
     private static AppiumDriver driverSingle = null;
     private static WebDriverWait waitSingle;
@@ -27,8 +31,16 @@ public class Driver extends TestProperties {
     protected String APP_PACKAGE;
     protected String APP_ACTIVITY;
 
-    // Constructor initializes properties on driver creation
-    protected Driver() throws IOException {
+    /**
+     * Initialize driver with appropriate capabilities depending on platform and application
+     *
+     * @throws Exception
+     */
+    protected void prepareDriver() throws Exception {
+        LOG.debug("Prepare driver");
+        capabilities = new DesiredCapabilities();
+        String browserName;
+
         AUT = getProp("aut");
         String t_sut = getProp("sut");
         SUT = t_sut == null ? null : "https://" + t_sut;
@@ -37,17 +49,6 @@ public class Driver extends TestProperties {
         DEVICE_NAME = getProp("devicename");
         APP_PACKAGE = getProp("app_package");
         APP_ACTIVITY = getProp("app_activity");
-    }
-
-    /**
-     * Initialize driver with appropriate capabilities depending on platform and application
-     *
-     * @throws Exception
-     */
-    protected void prepareDriver() throws Exception {
-
-        capabilities = new DesiredCapabilities();
-        String browserName;
 
         // Setup test platform: Android or iOS. Browser also depends on a platform
         switch (TEST_PLATFORM) {

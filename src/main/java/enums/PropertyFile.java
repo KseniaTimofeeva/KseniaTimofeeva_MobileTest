@@ -1,17 +1,27 @@
 package enums;
 
 public enum PropertyFile {
-    NATIVE_TEST_PROPERTIES("nativetest.properties"),
-    WEB_TEST_PROPERTIES("webtest.properties");
+    NATIVE_TEST_PROPERTIES("nativetest.properties", "native"),
+    WEB_TEST_PROPERTIES("webtest.properties", "web");
 
     private String fileName;
+    private String propertyName;
 
-    PropertyFile(String fileName) {
+    PropertyFile(String fileName, String propertyName) {
         this.fileName = fileName;
+        this.propertyName = propertyName;
     }
 
-    @Override
-    public String toString() {
+    public String getFileName() {
         return fileName;
+    }
+
+    public static PropertyFile getPropertyFile(String usePropFile) {
+        for (PropertyFile file : PropertyFile.values()) {
+            if (file.propertyName.equals(usePropFile)) {
+                return file;
+            }
+        }
+        throw new IllegalArgumentException("File was not found");
     }
 }

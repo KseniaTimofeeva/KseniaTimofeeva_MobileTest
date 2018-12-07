@@ -7,12 +7,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pageObjects.webPO.IndexPage;
+import scenarios.Hooks;
 import setup.Driver;
 
 import java.io.IOException;
 
 @Test(groups = "web")
-public class SimpleWebTests extends Driver {
+public class SimpleWebTests extends Hooks {
     private static final Logger LOG = LogManager.getLogger(SimpleWebTests.class);
 
     private IndexPage indexPage;
